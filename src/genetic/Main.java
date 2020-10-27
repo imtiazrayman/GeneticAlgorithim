@@ -14,8 +14,6 @@ public class Main{
   }
 
   public static void populate(int m, int n){
-      //todo
-      // this function must be implemented
 
 
   }
