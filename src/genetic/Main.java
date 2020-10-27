@@ -26,6 +26,7 @@ public class Main{
 
   public static void main(String[] args) {
     // int N,M;
+
     // N = 6;
     // M = 4;
      //N = Integer.parseInt(args[0]);
