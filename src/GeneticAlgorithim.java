@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class GeneticAlgorithim {
@@ -35,8 +37,6 @@ public class GeneticAlgorithim {
     return cost;
   }
 
-
-
   public static int absolutevalue(int a) {
     if (a > 0) {
       return a;
@@ -44,6 +44,7 @@ public class GeneticAlgorithim {
     return -1 * a;
   }
   public static void main(String[] args) {
+
     int m = 2;
     int n = 5;
     Random random = new Random();
@@ -68,54 +69,20 @@ public class GeneticAlgorithim {
       m = Integer.parseInt(args[0]); // rows
       n = Integer.parseInt(args[1]); // cols
     }
-    // m and n has been specified from this point on
 
-    // secondary method which may be to make the the algorithim be able to run
-    int populationsize = m * n;
-    int cost = 0;
-
-    System.out.println("\nThe population of (" + m + ") Rows (" + n + ") Columns\n" + populationsize + " individuals Has been generated");
-
-   // int population[][] = new int[m][n];
-   // int population2[][] = new int[m][n];
-
-    System.out.println("Genetic Handler running");
-    GeneticHandler parent1 = new GeneticHandler(m, n);
-    System.out.println("Genetic Handler NOT running");
-
-    System.out.println("Genetic Handler running");
-    GeneticHandler parent2 = new GeneticHandler(m, n);
-    System.out.println("Genetic Handler NOT running");
-
-    int population[][] = parent1.getPopulation();
-    int population2[][] = parent2.getPopulation();
-
-
-
-    /*try {
+    try {
       //FileWriter myWriter = new FileWriter("src\\input.txt");
-      FileWriter myWriter = new FileWriter("input.txt");
-      System.out.println("Generating Population size: " + populationsize + "\t");
-      System.out.println("\nWriting to the input.txt file\n-----------------------------\n");
+      FileWriter myWriter = new FileWriter("output.txt");
+      int populationsize = m * n;
+      int cost = 0;
+      System.out.println("\nThe population of (" + m + ") Rows (" + n + ") Columns\n" + populationsize + " individuals Has been generated");
+      GeneticHandler parent1 = new GeneticHandler(m, n);
+      GeneticHandler parent2 = new GeneticHandler(m, n);
+      int population[][] = parent1.getPopulation();
+      int population2[][] = parent2.getPopulation();
 
-      int k = 0;
-      for(int i = 0; i < m; i++){
-        for(int j = 0; j < n; j++){
-          k++;
-          myWriter.write(Integer.toString(k) + " ");
-          System.out.print(k + "\t");
-        }
-        System.out.println();
-        myWriter.write("\n");
-      }
-      myWriter.close();
-    } catch (IOException e) {
-      System.out.println("The input file could not be found.");
-    }*/
-    System.out.println();
-
-    // This is the intialization of the first array
-    // This array will be populated in order.
+      // This is the intialization of the first array
+      // This array will be populated in order.
     /*int k = 0;
     for (int i = 0; i < m; i++) {
       for (int j = 0; j < n; j++) {
@@ -139,18 +106,18 @@ public class GeneticAlgorithim {
         }
         System.out.println();
       }*/
-
       // The output of the costs based off off the funtion which determines the Costs
+
       int cost1 = fitness(population, m, n);
       int cost2 = fitness(population2, m, n);
       int childrencost = 0;
+
       // total cost determines the total costs of both arrays.
       int totalcost = CostComparison(cost1, cost2);
 
       System.out.println("The cost of the first array " + cost1);
       System.out.println("The cost of the second array " + cost2);
       System.out.println("The total cost between the first array and the second array is going to be " + totalcost);
-
       int child[][] = new int[m][n];
 
       System.out.println("CROSSOVER ARRAY BELOW");
@@ -164,9 +131,9 @@ public class GeneticAlgorithim {
       }
       int crossovercost = fitness(child, m, n);
       System.out.println("The cost of the Crossover is " + crossovercost);
-
       int mutantchild[][] = new int[m][n];
       mutantchild = parent1.occurMutation(child);
+
       System.out.println("First mutation\n");
       for(int i = 0; i < m; i++){
         for(int j = 0; j < n; j++ ){
@@ -191,7 +158,7 @@ public class GeneticAlgorithim {
       int premutatedchildcost = childrencost + crossovercost;
       cost2 += premutatedchildcost;
 
-      for(int y = 1; y < 8; y++){
+      for(int y = 1; y < 7; y++){
         /*
         child cost
         mutation
@@ -215,9 +182,20 @@ public class GeneticAlgorithim {
         System.out.println("The cost of Mutation " + y + " is " + childrencost);
         cost2 += childrencost;
       }
-
       totalcost = CostComparison(cost1, cost2);
       System.out.println("The total cost is " + totalcost);
+      myWriter.close();
+    } catch (IOException e) {
+      System.out.println("The input file could not be found.");
+    }
+    System.out.println();
+
+
+
+
+    // m and n has been specified from this point on
+
+    // secondary method which may be to make the the algorithim be able to run
 
 
       //total cost
