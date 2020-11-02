@@ -191,7 +191,7 @@ public class GeneticAlgorithim {
       int premutatedchildcost = childrencost + crossovercost;
       cost2 += premutatedchildcost;
 
-      for(int y = 1; y < 80; y++){
+      for(int y = 1; y < 8; y++){
         /*
         child cost
         mutation
