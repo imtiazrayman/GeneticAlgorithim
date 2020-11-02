@@ -1,23 +1,8 @@
-package genetic;
-
 import java.util.*;
-import java.io.*;
 
 public class GeneticAlgorithim {
-
-  public void crossOver(int array[][], int array2[][] , int row, int col){
-    int temporaryvalue = 0;
-      int halfrow = row/2;
-      for(int i = halfrow; i < row; i++){
-        for(int j = col; j <col; j++){
-          temporaryvalue = array2[i][j];
-          array2[i][j] = array[i][j];
-          array[i][j] = temporaryvalue;
-        }
-      }
-  }
-
-  public static void PrintArray(int array[][], int row, int col){
+  public static void PrintArray(int array[][], int row, int col)
+  {
     for(int i = 0; i < row; i++){
       for(int j = 0; j < col; j++ ){
         System.out.print(array[i][j] + "\t");
@@ -25,7 +10,6 @@ public class GeneticAlgorithim {
       System.out.println();
     }
   }
-
   public static int CostComparison(int cost1, int cost2){
     int totalcost = 0;
     totalcost += cost1 + cost2;
@@ -51,20 +35,15 @@ public class GeneticAlgorithim {
     return cost;
   }
 
+
+
   public static int absolutevalue(int a) {
     if (a > 0) {
       return a;
     }
     return -1 * a;
   }
-
-
   public static void main(String[] args) {
-    // int N,M;
-    // N = 6;
-    // M = 4;
-    //N = Integer.parseInt(args[0]);
-    //M = Integer.parseInt(args[1]);
     int m = 2;
     int n = 5;
     Random random = new Random();
@@ -91,19 +70,14 @@ public class GeneticAlgorithim {
     }
     // m and n has been specified from this point on
 
-
     // secondary method which may be to make the the algorithim be able to run
-
     int populationsize = m * n;
     int cost = 0;
 
     System.out.println("\nThe population of (" + m + ") Rows (" + n + ") Columns\n" + populationsize + " individuals Has been generated");
 
    // int population[][] = new int[m][n];
-
    // int population2[][] = new int[m][n];
-
-
 
     System.out.println("Genetic Handler running");
     GeneticHandler parent1 = new GeneticHandler(m, n);
@@ -114,7 +88,6 @@ public class GeneticAlgorithim {
     System.out.println("Genetic Handler NOT running");
 
     int population[][] = parent1.getPopulation();
-
     int population2[][] = parent2.getPopulation();
 
 
@@ -170,32 +143,87 @@ public class GeneticAlgorithim {
       // The output of the costs based off off the funtion which determines the Costs
       int cost1 = fitness(population, m, n);
       int cost2 = fitness(population2, m, n);
+      int childrencost = 0;
       // total cost determines the total costs of both arrays.
       int totalcost = CostComparison(cost1, cost2);
 
       System.out.println("The cost of the first array " + cost1);
       System.out.println("The cost of the second array " + cost2);
-      System.out.println("The total cost is going to be " + totalcost);
+      System.out.println("The total cost between the first array and the second array is going to be " + totalcost);
+
+      int child[][] = new int[m][n];
 
       System.out.println("CROSSOVER ARRAY BELOW");
-      parent1.crossOver(parent2);
-      //System.out.println(parent1.getPopulation().OutputPopulation());
-      PrintArray(parent1.getPopulation(), m, n);
-
-
-
-
-
-      int temporaryvalue = 0;
-      int halfrow = m/2;
-      for(int i = halfrow; i < m; i++){
-        for(int j = n; j <n; j++){
-          temporaryvalue = population2[i][j];
-          population2[i][j] = population[i][j];
-          population[i][j] = temporaryvalue;
+      child = parent2.crossOver(parent1);
+      population = parent1.getPopulation();
+      for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++ ){
+          System.out.print(child[i][j] + "\t");
         }
+        System.out.println();
       }
-    //  System.out.println(PrintArray(population, m, n));
+      int crossovercost = fitness(child, m, n);
+      System.out.println("The cost of the Crossover is " + crossovercost);
+
+      int mutantchild[][] = new int[m][n];
+      mutantchild = parent1.occurMutation(child);
+      System.out.println("First mutation\n");
+      for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++ ){
+          System.out.print(mutantchild[i][j] + "\t");
+        }
+        System.out.println();
+      }
+      childrencost = fitness(mutantchild, m, n);
+      System.out.println("The cost of the first Mutation is " + childrencost);
+
+      /*
+      mutantchild = parent1.occurMutation(mutantchild);
+      System.out.println("Second mutation\n");
+      for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++ ){
+          System.out.print(mutantchild[i][j] + "\t");
+        }
+        System.out.println();
+      }
+      childrencost = fitness(mutantchild, m, n);
+      System.out.println("The cost of the Second Mutation is " + childrencost);*/
+      int premutatedchildcost = childrencost + crossovercost;
+      cost2 += premutatedchildcost;
+
+      for(int y = 1; y < 80; y++){
+        /*
+        child cost
+        mutation
+        print which version
+        print the mutated child
+        fitness function on the child
+        print the cost for this child
+        print the running cost of all child including this one
+        mutate the newchild
+        repeat
+         */
+        mutantchild = parent1.occurMutation(mutantchild);
+        System.out.println(" Mutation " + y + "\n");
+        for(int i = 0; i < m; i++){
+          for(int j = 0; j < n; j++ ){
+            System.out.print(mutantchild[i][j] + "\t");
+          }
+          System.out.println();
+        }
+        childrencost = fitness(mutantchild, m, n);
+        System.out.println("The cost of Mutation " + y + " is " + childrencost);
+        cost2 += childrencost;
+      }
+
+      totalcost = CostComparison(cost1, cost2);
+      System.out.println("The total cost is " + totalcost);
+
+
+      //total cost
+
+
+
 
 
       /*try {
