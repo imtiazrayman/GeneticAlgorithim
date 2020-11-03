@@ -50,6 +50,7 @@ public class GeneticAlgorithm {
     //AS as default Value m and n are set to 2 and 5
     int m = 2;
     int n = 5;
+
     Random random = new Random();
     //These codes handle the input from the user whether it be Command Line or From the console Input.
     //The code can handle the cases of no arguments in command line or cases where the command line may have more than the required 2
@@ -136,9 +137,13 @@ public class GeneticAlgorithm {
       childrencost = fitness(mutantchild, m, n);
       System.out.println("The cost of the first Mutation is " + childrencost);
 
-      // This will calculate the cost of
+      //Premuatedchildcost means it calculates the cost which are the non mutated children.
       int premutatedchildcost = childrencost + crossovercost;
+
       cost2 += premutatedchildcost;
+      //MutationRate references to how many mutaions will occur I am not too sure how many to do so I set it to 6 as a default.
+      int mutationrate = 6;
+
 
       //These rounds of mutations can work for any specified amount. In this instance it is set to 7 rounds of mutations.
       for(int y = 1; y < 7; y++) {
