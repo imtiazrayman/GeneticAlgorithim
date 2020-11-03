@@ -116,17 +116,6 @@ public class GeneticHandler {
 
         return offspring;
     }
-
-
-
-
-
-
-
-
-
-
-
     public int[][] getPopulation() {
         return population;
     }

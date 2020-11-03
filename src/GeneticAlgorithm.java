@@ -149,7 +149,7 @@ public class GeneticAlgorithm {
 
 
       //These rounds of mutations can work for any specified amount. In this instance it is set to 7 rounds of mutations.
-      for(int y = 2; y < 7; y++) {
+      for(int y = 2; y < 2; y++) {
         /*
         How this loop Works
           Child cost
