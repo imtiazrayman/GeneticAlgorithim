@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -77,8 +78,14 @@ public class GeneticAlgorithm {
       n = Integer.parseInt(args[1]); // cols
     }
     try {//THIS TRY CATCH CHECKS AND SEES IF THE OUTPUT.TXT FILE IS WITHIN THE SCOPE OR EXISTS.
-      //FileWriter myWriter = new FileWriter("src\\input.txt");
-      //Creating the Output File
+
+      try {
+        FileWriter costWriter = new FileWriter("cost.txt");
+        System.out.println("Cost file has been found");
+
+
+
+
       FileWriter myWriter = new FileWriter("output.txt");
       int populationsize = m * n;
       int cost = 0;
@@ -107,6 +114,9 @@ public class GeneticAlgorithm {
       int totalcost = CostComparison(cost1, cost2);
       System.out.println("The cost of the first array " + cost1);
       System.out.println("The cost of the second array " + cost2);
+      costWriter.write("Costs for each step\n");
+      costWriter.write(String.valueOf(cost1) + "\n");
+      costWriter.write(String.valueOf(cost2) + "\n");
       System.out.println("The total cost between the first array and the second array is going to be " + totalcost + "\n");
       //Create a child array which will serve as a result of reproduction between the two parent arrays.
       int child[][] = new int[m][n];
@@ -127,6 +137,7 @@ public class GeneticAlgorithm {
       //Calculate the cost of the crossover for the resulting child.
       int crossovercost = fitness(child, m, n);
       System.out.println("The cost of the Crossover is " + crossovercost);
+      costWriter.write(String.valueOf(crossovercost) + "\n");
       //Create an instance of a child which will serve as a basis for future mutations called the mutant child
       int mutantchild[][] = new int[m][n];
       System.out.println("\nMutation 1");
@@ -139,9 +150,11 @@ public class GeneticAlgorithm {
       }
       childrencost = fitness(mutantchild, m, n);
       System.out.println("The cost of the first Mutation is " + childrencost);
+      costWriter.write(String.valueOf(childrencost) + "\n");
 
       //Premuatedchildcost means it calculates the cost which are the non mutated children.
       int premutatedchildcost = childrencost + crossovercost;
+      costWriter.write(String.valueOf(premutatedchildcost) + "\n");
 
       cost2 += premutatedchildcost;
       //MutationRate references to how many mutaions will occur I am not too sure how many to do so I set it to 6 as a default.
@@ -172,12 +185,21 @@ public class GeneticAlgorithm {
         }
         childrencost = fitness(mutantchild, m, n);
         System.out.println("The cost of Mutation " + y + " is " + childrencost);
+        costWriter.write(String.valueOf(childrencost) + "\n");
         cost2 += childrencost;
       }
       totalcost = CostComparison(cost1, cost2);
       System.out.println("\nThe total cost is " + totalcost);
       myWriter.write(String.valueOf(totalcost));
+      costWriter.write("Total Cost\n");
+      costWriter.write(String.valueOf(totalcost) + "\n");
+      costWriter.close();
       myWriter.close();
+
+      } catch (FileNotFoundException error) {
+        System.out.println("The cost file could not be found.");
+      }
+
     } catch (IOException e) {
       System.out.println("The output file could not be found.");
     }
