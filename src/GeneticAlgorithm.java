@@ -86,11 +86,14 @@ public class GeneticAlgorithm {
 
       //This is the creation of the two objects which will create the genetic variation.
       //The two objects calls the constructor which takes in the two parameters the m and n values which are the rows and columns
+      System.out.println("\nParent 1");
       GeneticHandler parent1 = new GeneticHandler(m, n);
+      System.out.println("\nParent 2");
       GeneticHandler parent2 = new GeneticHandler(m, n);
 
       //once the two parent objects are created then the arrays are then assigned to different arrays which will represent the two root parents of the algorithim
       int population[][] = parent1.getPopulation();
+
       int population2[][] = parent2.getPopulation();
 
       //The fitness functions are called on the two arrays
@@ -104,7 +107,7 @@ public class GeneticAlgorithm {
       int totalcost = CostComparison(cost1, cost2);
       System.out.println("The cost of the first array " + cost1);
       System.out.println("The cost of the second array " + cost2);
-      System.out.println("The total cost between the first array and the second array is going to be " + totalcost);
+      System.out.println("The total cost between the first array and the second array is going to be " + totalcost + "\n");
       //Create a child array which will serve as a result of reproduction between the two parent arrays.
       int child[][] = new int[m][n];
 
@@ -126,6 +129,7 @@ public class GeneticAlgorithm {
       System.out.println("The cost of the Crossover is " + crossovercost);
       //Create an instance of a child which will serve as a basis for future mutations called the mutant child
       int mutantchild[][] = new int[m][n];
+      System.out.println("\nMutation 1");
       mutantchild = parent1.occurMutation(child);
       for(int i = 0; i < m; i++){
         for(int j = 0; j < n; j++ ){
@@ -133,7 +137,6 @@ public class GeneticAlgorithm {
         }
         System.out.println();
       }
-
       childrencost = fitness(mutantchild, m, n);
       System.out.println("The cost of the first Mutation is " + childrencost);
 
@@ -146,7 +149,7 @@ public class GeneticAlgorithm {
 
 
       //These rounds of mutations can work for any specified amount. In this instance it is set to 7 rounds of mutations.
-      for(int y = 1; y < 7; y++) {
+      for(int y = 2; y < 7; y++) {
         /*
         How this loop Works
           Child cost
@@ -160,7 +163,7 @@ public class GeneticAlgorithm {
           repeat
          */
         mutantchild = parent1.occurMutation(mutantchild);
-        System.out.println(" Mutation " + y + "\n");
+        System.out.println("\nMutation " + y);
         for(int i = 0; i < m; i++){
           for(int j = 0; j < n; j++ ){
             System.out.print(mutantchild[i][j] + "\t");
@@ -172,102 +175,14 @@ public class GeneticAlgorithm {
         cost2 += childrencost;
       }
       totalcost = CostComparison(cost1, cost2);
-      System.out.println("The total cost is " + totalcost);
+      System.out.println("\nThe total cost is " + totalcost);
+      myWriter.write(String.valueOf(totalcost));
       myWriter.close();
     } catch (IOException e) {
-      System.out.println("The input file could not be found.");
+      System.out.println("The output file could not be found.");
     }
     System.out.println();
 
-    System.out.println("The Parents ");
-
-    // m and n has been specified from this point on
-
-    // secondary method which may be to make the the algorithim be able to run
-
-      //total cost
-
-      /*try {
-        //File file = new File("src\\input.txt");
-        File file = new File("input.txt");
-        Scanner reader = new Scanner(file);
-        System.out.println("\nReading from the Input.txt file\n------------------------\n");
-        for (int i = 0; i < m; i++) {
-          for (int j = 0; j < n; j++) {
-            population[i][j] = Integer.parseInt(reader.next());
-            System.out.print(population[i][j] + "\t");
-          }
-          System.out.println();
-        }
-      } catch (Exception E) {
-
-        System.out.println(E);
-        System.out.println("There has been an error in the Input.txt file.");
-      }*/
-
-      System.out.println("------------------------\nThe Cost paths : \n");
-
-    /*(System.out.println("Algorithim 1 starting");
-    for (int i = 0; i < m; ++i) { // rows
-      for (int j = 0; j < n - 1; ++j) { // columns
-        int tempcost = cost;
-        cost = cost + abs(population[i][j + 1] - population[i][j]);
-        System.out.println("The Costs: " + "\t" + tempcost + " + (" + population[i][j + 1] + " - " + population[i][j] + ") = " + cost);
-      }
-    }
-
-    System.out.println("Algorithim 2 starting");
-    for (int i = 0; i < n; ++i) { // columns
-      for (int j = 0; j < m - 1; ++j) { // rows
-        int tempcost = cost;
-        cost = cost + abs(population[j + 1][i] - population[j][i]);
-        System.out.println("The Costs: " + "\t" + tempcost + " + (" + population[j + 1][i] + " - " + population[j][i]+ ") = " + cost);
-      }
-    }*/
-
-
-/*
-      try {
-        //FileWriter myWriter3 = new FileWriter("src\\cost.txt");
-        FileWriter myWriter3 = new FileWriter("cost.txt");
-        System.out.println("SEARCHING FROM SIDE TO SIDE");
-        myWriter3.write("Searching from side to side");
-        for (int i = 0; i < m; ++i) { // rows
-          for (int j = 0; j < n - 1; ++j) { // columns
-            int tempcost = cost;
-            cost = cost + absolutevalue(population[i][j + 1] - population[i][j]);
-
-            System.out.println("The Costs: " + "\t" + tempcost + " + (" + population[i][j + 1] + " - " + population[i][j] + ") = " + cost);
-            myWriter3.write("The Costs: " + "\t" + tempcost + " + (" + population[i][j + 1] + " - " + population[i][j] + ") = " + cost + "\n");
-          }
-          myWriter3.write("\n");
-        }
-
-        myWriter3.write("\nSearching Top to Bottom\n");
-        System.out.println("\nSEARCHING FROM TOP TO BOTTOM");
-        for (int i = 0; i < n; ++i) { // columns
-          for (int j = 0; j < m - 1; ++j) { // rows
-            int tempcost = cost;
-            cost = cost + absolutevalue(population[j + 1][i] - population[j][i]);
-            myWriter3.write("The Costs: " + "\t" + tempcost + " + (" + population[j + 1][i] + " - " + population[j][i] + ") = " + cost + "\n");
-            System.out.println("The Costs: " + "\t" + tempcost + " + (" + population[j + 1][i] + " - " + population[j][i] + ") = " + cost);
-          }
-          myWriter3.write("\n");
-        }
-        myWriter3.close();
-      } catch (IOException e) {
-        System.out.println("An error of the cost.txt file has occured.");
-      }
-      try {
-        // FileWriter myWriter2 = new FileWriter("src\\output.txt");
-        FileWriter myWriter2 = new FileWriter("output.txt");
-        System.out.println("-------------------------");
-        System.out.println("THE COST WILL BE " + cost);
-        myWriter2.write(String.valueOf(cost));
-        myWriter2.close();
-      } catch (IOException e) {
-        System.out.println("An error of the output.txt file has occured.");
-      }*/
 
     }
   }
